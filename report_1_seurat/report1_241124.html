@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Mouse gut and spine single cell transcriptomics</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="mouse-gut-and-spine-single-cell-transcriptomics">Mouse gut and spine single cell transcriptomics</h1>
+<h2 id="report-1">Report #1</h2>
+<h3 id="background">Background</h3>
+<p>Mice were fed with control diet or supplemented with B-fructan. Spinal cord and cecum tissues were dissected, enzymatically digested, FACS-sorted and finally subjected to 10X single-cell library construction.</p>
+<p>Libraries were sequenced on a NovaSeq Illumina instrument at an average depth of 500,000,000 150-cycles paired-end reads per library.</p>
+<p>Metadata of libraries is included here:</p>
+<table>
+<thead>
+<tr>
+<th>scseq ID</th>
+<th>Disease</th>
+<th>Diet</th>
+<th>Tissues</th>
+<th>Mouse ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td>MS</td>
+<td>B-fructan</td>
+<td>Gut</td>
+<td>7_BF-21-Cecum</td>
+</tr>
+<tr>
+<td>C2</td>
+<td>MS</td>
+<td>B-fructan</td>
+<td>Gut</td>
+<td>8_BF-26-Cecum</td>
+</tr>
+<tr>
+<td>C3</td>
+<td>MS</td>
+<td>B-fructan</td>
+<td>Gut</td>
+<td>9_BF-27-Cecum</td>
+</tr>
+<tr>
+<td>C4</td>
+<td>MS</td>
+<td>Control</td>
+<td>Gut</td>
+<td>10_CON-23-Cecum</td>
+</tr>
+<tr>
+<td>C5</td>
+<td>MS</td>
+<td>Control</td>
+<td>Gut</td>
+<td>11_CON-25-Cecum</td>
+</tr>
+<tr>
+<td>C6</td>
+<td>MS</td>
+<td>Control</td>
+<td>Gut</td>
+<td>12_CON-29-Cecum</td>
+</tr>
+<tr>
+<td>B7</td>
+<td>MS</td>
+<td>B-fructan</td>
+<td>Spine</td>
+<td>1_CON-23-Spine</td>
+</tr>
+<tr>
+<td>B8</td>
+<td>MS</td>
+<td>B-fructan</td>
+<td>Spine</td>
+<td>2_CON-25-Spine</td>
+</tr>
+<tr>
+<td>B9</td>
+<td>MS</td>
+<td>B-fructan</td>
+<td>Spine</td>
+<td>3_CON-29-Spine</td>
+</tr>
+<tr>
+<td>B10</td>
+<td>MS</td>
+<td>Control</td>
+<td>Spine</td>
+<td>4_BF-21-Spine</td>
+</tr>
+<tr>
+<td>B11</td>
+<td>MS</td>
+<td>Control</td>
+<td>Spine</td>
+<td>5_BF-26-Spine</td>
+</tr>
+<tr>
+<td>B12</td>
+<td>MS</td>
+<td>Control</td>
+<td>Spine</td>
+<td>6_BF-27-Spine</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quantification">Quantification</h3>
+<p>Libraries were quantified using the proprietary pipeline from 10X genomics cellranger. We decided to use this pipeline because it relies on genome and GTF files, which allows to use all annotated elements on the genome, including pseudo-genes and non-conding RNAs. Methods like kallisto bus or salmon alevin are based on only the annotated transcriptome and therefore only include protein-expressing genes.</p>
+<p>The mouse genome was formatted for cellranger using script mkref_GRCm38.sh. Quantification of libraries was conducted with the following code:</p>
+<pre><code class="language-bash"><span class="hljs-comment"># Path to the reference genome</span>
+REF_PATH=<span class="hljs-string">&quot;/home/dayhoff/sdd/juan/projects/heatherArmstrong/SC_study/mm10&quot;</span>
+
+<span class="hljs-comment"># Path to your FASTQ files</span>
+FASTQ_PATH=<span class="hljs-string">&quot;/home/dayhoff/sdd/juan/projects/heatherArmstrong/SC_study&quot;</span>
+
+<span class="hljs-comment"># Array of sample names</span>
+SAMPLES=(<span class="hljs-string">&quot;B10&quot;</span> <span class="hljs-string">&quot;B11&quot;</span> <span class="hljs-string">&quot;B12&quot;</span> <span class="hljs-string">&quot;B7&quot;</span> <span class="hljs-string">&quot;B8&quot;</span> <span class="hljs-string">&quot;B9&quot;</span> <span class="hljs-string">&quot;C1&quot;</span> <span class="hljs-string">&quot;C2&quot;</span> <span class="hljs-string">&quot;C3&quot;</span> <span class="hljs-string">&quot;C4&quot;</span> <span class="hljs-string">&quot;C5&quot;</span> <span class="hljs-string">&quot;C6&quot;</span>)
+
+<span class="hljs-comment"># Run cellranger count for each sample</span>
+<span class="hljs-keyword">for</span> SAMPLE <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;<span class="hljs-variable">${SAMPLES[@]}</span>&quot;</span>; <span class="hljs-keyword">do</span>
+	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Processing sample: <span class="hljs-variable">${SAMPLE}</span>&quot;</span>
+		        
+	cellranger count \
+	--<span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;<span class="hljs-variable">${SAMPLE}</span>_count&quot;</span> \
+	--transcriptome=<span class="hljs-string">&quot;<span class="hljs-variable">${REF_PATH}</span>&quot;</span> \
+	--fastqs=<span class="hljs-string">&quot;<span class="hljs-variable">${FASTQ_PATH}</span>&quot;</span> \
+	--sample=<span class="hljs-string">&quot;<span class="hljs-variable">${SAMPLE}</span>&quot;</span> \
+	--localcores=8 \
+	--localmem=64 \
+	&gt; <span class="hljs-string">&quot;<span class="hljs-variable">${SAMPLE}</span>_count.log&quot;</span> 2&gt;&amp;1
+	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Finished processing sample: <span class="hljs-variable">${SAMPLE}</span>&quot;</span>
+<span class="hljs-keyword">done</span>
+</code></pre>
+<h3 id="quality-control">Quality control</h3>
+<p>Quantification matrices were then postprocessed with script postprocessing.R, which essentially uses Seurat.</p>
+<p>In an ideal library, the number of mitochondrial reads should be low, lower than 5% and the correlation between mitochondrial RNA and total RNA (nCount_RNA) should be low, while the correlation between total RNA (nCount_RNA) and number of genes (n_Feature_RNA) should be high, ideally higher than 90%.</p>
+<p>Thus, when filtering data, parameters should be chosen to adjust those correlation coefficients conveniently.</p>
+<h3 id="inspection-of-metrics-percentage-of-mt-rna-number-of-genes-and-total-rna">Inspection of metrics: percentage of mt RNA, number of genes and total RNA</h3>
+<p>Based on initial inspection of metrics, it was decided to filter data according to the following thresholds:</p>
+<h5 id="gut">Gut</h5>
+<p>Number of genes: nFeature_RNA &gt; 200 &amp; nFeature_RNA &lt; 6000
+Total RNA: nCount_RNA &gt; 500 &amp; nCount_RNA &lt; 25000
+Mitochondrial RNA %: 5%</p>
+<h5 id="spine">Spine</h5>
+<p>Number of genes: nFeature_RNA &gt; 200 &amp; nFeature_RNA &lt; 3500
+Total RNA: nCount_RNA &gt; 500 &amp; nCount_RNA &lt; 12000
+Mitochondrial RNA %: 5%</p>
+<p>Based on the plots after filtering, those thresholds seemed to be a good compromise.</p>
+<h4 id="sample-c1-gut-fructan">Sample C1: Gut fructan</h4>
+<h5 id="before-filtering">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C1_seurat_QCplot.png" alt="C1_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C1_seurat_feature-relationship.png" alt="C1_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C1_seurat_QCplot_AF.png" alt="C2_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C1_seurat_feature-relationship_AF.png" alt="C1_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-c2-gut-fructan">Sample C2: Gut fructan</h4>
+<h5 id="before-filtering-1">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C2_seurat_QCplot.png" alt="C2_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C2_seurat_feature-relationship.png" alt="C2_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-1">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C2_seurat_QCplot_AF.png" alt="C2_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C2_seurat_feature-relationship_AF.png" alt="C2_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-c3-gut-fructan">Sample C3: Gut fructan</h4>
+<h5 id="before-filtering-2">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C3_seurat_QCplot.png" alt="C3_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C3_seurat_feature-relationship.png" alt="C3_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-2">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C3_seurat_QCplot_AF.png" alt="C3_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C3_seurat_feature-relationship_AF.png" alt="C3_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-c4-gut-control">Sample C4: Gut control</h4>
+<h5 id="before-filtering-3">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C4_seurat_QCplot.png" alt="C4_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C4_seurat_feature-relationship.png" alt="C4_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-3">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C4_seurat_QCplot_AF.png" alt="C4_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C4_seurat_feature-relationship_AF.png" alt="C4_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-c5-gut-control">Sample C5: Gut control</h4>
+<h5 id="before-filtering-4">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C5_seurat_QCplot.png" alt="C5_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C5_seurat_feature-relationship.png" alt="C5_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-4">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C5_seurat_QCplot_AF.png" alt="C5_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C5_seurat_feature-relationship_AF.png" alt="C5_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-c6-gut-control">Sample C6: Gut control</h4>
+<h5 id="before-filtering-5">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C6_seurat_QCplot.png" alt="C6_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C6_seurat_feature-relationship.png" alt="C6_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-5">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C6_seurat_QCplot_AF.png" alt="C6_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C6_seurat_feature-relationship_AF.png" alt="C6_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-b7-spine-fructan">Sample B7: Spine fructan</h4>
+<h5 id="before-filtering-6">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B7_seurat_QCplot.png" alt="B7_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B7_seurat_feature-relationship.png" alt="B7_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-6">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B7_seurat_QCplot_AF.png" alt="B7_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B7_seurat_feature-relationship_AF.png" alt="B7_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-b8-spine-fructan">Sample B8: Spine fructan</h4>
+<h5 id="before-filtering-7">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B8_seurat_QCplot.png" alt="B8_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B8_seurat_feature-relationship.png" alt="B8_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-7">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B8_seurat_QCplot_AF.png" alt="B8_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B8_seurat_feature-relationship_AF.png" alt="B8_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-b9-spine-fructan">Sample B9: Spine fructan</h4>
+<h5 id="before-filtering-8">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B9_seurat_QCplot.png" alt="B9_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B9_seurat_feature-relationship.png" alt="B9_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-8">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B9_seurat_QCplot_AF.png" alt="B9_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B9_seurat_feature-relationship_AF.png" alt="B9_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-b10-spine-control">Sample B10: Spine control</h4>
+<h5 id="before-filtering-9">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B10_seurat_QCplot.png" alt="B10_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B10_seurat_feature-relationship.png" alt="B10_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-9">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B10_seurat_QCplot_AF.png" alt="B10_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B10_seurat_feature-relationship_AF.png" alt="B10_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-b11-spine-control">Sample B11: Spine control</h4>
+<h5 id="before-filtering-10">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B11_seurat_QCplot.png" alt="B11_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B11_seurat_feature-relationship.png" alt="B11_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-10">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B11_seurat_QCplot_AF.png" alt="B11_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B11_seurat_feature-relationship_AF.png" alt="B11_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="sample-b12-spine-control">Sample B12: Spine control</h4>
+<h5 id="before-filtering-11">Before filtering</h5>
+<p>Metrics</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B12_seurat_QCplot.png" alt="B12_seurat_QCplot.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B12_seurat_feature-relationship.png" alt="B12_seurat_feature-relationship.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="after-filtering-11">After filtering</h5>
+<p>Metrics
+table&gt;</p>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B12_seurat_QCplot_AF.png" alt="B12_seurat_QCplot_AF.png" width="500"></td>
+  </tr>
+</table>
+<p>Correlations</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B12_seurat_feature-relationship_AF.png" alt="B12_seurat_feature-relationship_AF.png" width="500"></td>
+  </tr>
+</table>
+<h3 id="inspection-and-characterization-of-individual-datasets">Inspection and characterization of individual datasets</h3>
+<p>Datasets were first imported individually and subjected to preprocessing and UMAP plotting:</p>
+<h4 id="sample-c1-gut-fructan-1">Sample C1: Gut fructan</h4>
+<h5 id="umap-plot">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C1_UMAPplot_seurat_clusters.png" alt="C1_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells">cells</h5>
+<p>Sample  C1  before filtering had  639  cells <br>
+Sample  C1  after filtering had  542  cells</p>
+<h4 id="sample-c2-gut-fructan-1">Sample C2: Gut fructan</h4>
+<h5 id="umap-plot-1">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C2_UMAPplot_seurat_clusters.png" alt="C2_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-1">cells</h5>
+<p>Sample  C2  before filtering had  3133  cells <br>
+Sample  C2  after filtering had  2539  cells</p>
+<h4 id="sample-c3-gut-fructan-1">Sample C3: Gut fructan</h4>
+<h5 id="umap-plot-2">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C3_UMAPplot_seurat_clusters.png" alt="C3_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-2">cells</h5>
+<p>Sample  C3  before filtering had  2842  cells <br>
+Sample  C3  after filtering had  2561  cells</p>
+<h4 id="sample-c4-gut-control-1">Sample C4: Gut control</h4>
+<h5 id="umap-plot-3">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C4_UMAPplot_seurat_clusters.png" alt="C4_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-3">cells</h5>
+<p>Sample  C4  before filtering had  2738  cells <br>
+Sample  C4  after filtering had  2129  cells</p>
+<h4 id="sample-c5-gut-control-1">Sample C5: Gut control</h4>
+<h5 id="umap-plot-4">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C5_UMAPplot_seurat_clusters.png" alt="C5_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-4">cells</h5>
+<p>Sample  C5  before filtering had  2747  cells <br>
+Sample  C5  after filtering had  2308  cells</p>
+<h4 id="sample-c6-gut-control-1">Sample C6: Gut control</h4>
+<h5 id="umap-plot-5">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/C6_UMAPplot_seurat_clusters.png" alt="C6_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-5">cells</h5>
+<p>Sample  C6  before filtering had  2279  cells <br>
+Sample  C6  after filtering had  1906  cells</p>
+<h4 id="sample-b7-spine-fructan-1">Sample B7: Spine fructan</h4>
+<h5 id="umap-plot-6">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B7_UMAPplot_seurat_clusters.png" alt="B7_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-6">cells</h5>
+<p>Sample  B7  before filtering had  1547  cells <br>
+Sample  B7  after filtering had  1420  cells</p>
+<h4 id="sample-b8-spine-fructan-1">Sample B8: Spine fructan</h4>
+<h5 id="umap-plot-7">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B8_UMAPplot_seurat_clusters.png" alt="B8_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-7">cells</h5>
+<p>Sample  B8  before filtering had  1192  cells <br>
+Sample  B8  after filtering had  1029  cells</p>
+<h4 id="sample-b8-spine-fructan-2">Sample B8: Spine fructan</h4>
+<h5 id="umap-plot-8">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B9_UMAPplot_seurat_clusters.png" alt="B9_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-8">cells</h5>
+<p>Sample  B9  before filtering had  1574  cells <br>
+Sample  B9  after filtering had  1450  cells</p>
+<h4 id="sample-b10-spine-fructan">Sample B10: Spine fructan</h4>
+<h5 id="umap-plot-9">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B10_UMAPplot_seurat_clusters.png" alt="B10_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-9">cells</h5>
+<p>Sample  B10  before filtering had  2918  cells <br>
+Sample  B10  after filtering had  2717  cells</p>
+<h4 id="sample-b11-spine-fructan">Sample B11: Spine fructan</h4>
+<h5 id="umap-plot-10">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B11_UMAPplot_seurat_clusters.png" alt="B11_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-10">cells</h5>
+<p>Sample  B11  before filtering had  3376  cells <br>
+Sample  B11  after filtering had  2935  cells</p>
+<h4 id="sample-b12-spine-fructan">Sample B12: Spine fructan</h4>
+<h5 id="umap-plot-11">UMAP plot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/B12_UMAPplot_seurat_clusters.png" alt="B12_UMAPplot_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="cells-11">cells</h5>
+<p>Sample  B12  before filtering had  3152  cells <br>
+Sample  B12  after filtering had  2930  cells</p>
+<h3 id="merging-datasets">Merging datasets</h3>
+<h4 id="gut-datasets">Gut datasets</h4>
+<p>All gut and all spine samples were merged into a single dataset, but keeping the original annotations. UMAP plots were generated and were coloured by:</p>
+<h5 id="1-original-identity">1. Original identity</h5>
+<p>Here we observe that sample C6 control (12_CON-29-Cecum) behaves differently from the other two in the same gorup (C4 and C5). My suggestion is to eliminate this sample, but it is ultimately up to you.</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/merged_datasets_gut_UMAP_by_orig_ident.png" alt="merged_datasets_gut_UMAP_by_orig_ident.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="2-by-diet">2. By diet</h5>
+<p>Here we observe, again the distribution of sample C6 deviated from the general distribution.</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/merged_datasets_gut_UMAP_by_Diet.png" alt="merged_datasets_gut_UMAP_by_Diet.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="3-seurat-clusters">3. Seurat clusters</h5>
+<p>Each cluster here likely represent a different type of cell, there are two ways to label them, either by identifying a profile of the same tissue in mouse in the published literature, or investigating, also in the literature, which markers are available for the types of cells expeted in the cecum.</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/merged_datasets_gut_UMAP_by_seurat_clusters.png" alt="merged_datasets_gut_UMAP_by_seurat_clusters.png" width="500"></td>
+  </tr>
+</table>
+<p>Some cell types expected in cecum are:</p>
+<h5 id="intestinal-epithelial-cells">Intestinal epithelial cells</h5>
+<p>Enterocytes
+Goblet cells
+Paneth cells
+Enteroendocrine cells
+Transit amplifying cells
+Intestinal stem cells
+Absorptive enterocytes</p>
+<h5 id="immune-cells-such-as">Immune cells such as</h5>
+<p>Macrophages
+Dendritic cells
+Resident macrophages
+T cells
+B cells
+Innate lymphoid cells</p>
+<h5 id="stromal-cells">Stromal cells</h5>
+<p>Fibroblasts
+Myofibroblasts
+Endothelial cells</p>
+<h5 id="mesenchymal-cells">Mesenchymal Cells</h5>
+<p>Smooth muscle cells</p>
+<h4 id="spine-datasets">Spine datasets</h4>
+<p>All spine and all spine samples were merged into a single dataset, but keeping the original annotations. UMAP plots were generated and were coloured by:</p>
+<h5 id="1-original-identity-1">1. Original identity</h5>
+<p>Unlike gut samples, all samples from spinal cord appear to behave as expected. So, no samples are suggested to be removed.</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/merged_datasets_spine_UMAP_by_orig_ident.png" alt="merged_datasets_spine_UMAP_by_orig_ident.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="2-by-diet-1">2. By diet</h5>
+<p>Again, everything looks good.</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/merged_datasets_spine_UMAP_by_Diet.png" alt="merged_datasets_gut_UMAP_by_Diet.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="3-seurat-clusters-1">3. Seurat clusters</h5>
+<p>Each cluster here likely represent a different type of cell, there are two ways to label them, either by identifying a profile of the same tissue in mouse in the published literature, or investigating, also in the literature, which markers are available for the types of cells expeted in the spine.</p>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/merged_datasets_gut_UMAP_by_Diet.png" alt="merged_datasets_gut_UMAP_by_Diet.png" width="500"></td>
+  </tr>
+</table>
+<p>Some expected types of cells in spinal cord are:</p>
+<h5 id="neuronal-cells">Neuronal cells</h5>
+<p>Motor neurons
+Interneurons
+Sensory neuron projections</p>
+<h5 id="glial-cells">Glial cells:</h5>
+<p>Astrocytes
+Oligodendrocytes
+Microglia
+NG2 cells/Oligodendrocyte precursor cells</p>
+<h5 id="progenitorstem-cells">Progenitor/Stem cells</h5>
+<p>Neural progenitor cells</p>
+<h5 id="endothelial-and-perivascular-cells">Endothelial and Perivascular Cells</h5>
+<h5 id="ependymal-cells">Ependymal cells</h5>
+<h5 id="pericytes">Pericytes</h5>
+<h5 id="meningeal-cells">Meningeal cells</h5>
+<p>Cell type classification still needs to be done.</p>
+<h3 id="identification-of-markers-per-cluster">Identification of markers per cluster</h3>
+<p>Preliminary automated marker exploration produced some relatively clear markers for spine clusters, but way less informative for cecum cells.</p>
+<h4 id="putative-markers-for-gut-cecum-cells">Putative markers for gut (cecum) cells</h4>
+<h5 id="heatmap">Heatmap</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/gut_merged_heatmap_top5_markers.png" alt="gut_merged_heatmap_top5_markers.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="dotplot">Dotplot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/gut_merged_dotplot_top5_markers.png" alt="gut_merged_dotplot_top5_markers.png" width="500"></td>
+  </tr>
+</table>
+<h4 id="putative-markers-for-spinal-cord-cells">Putative markers for spinal cord cells</h4>
+<h5 id="heatmap-1">Heatmap</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/spine_merged_heatmap_top5_markers.png" alt="gut_merged_heatmap_top5_markers.png" width="500"></td>
+  </tr>
+</table>
+<h5 id="dotplot-1">Dotplot</h5>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/spine_merged_dotplot_top5_markers.png" alt="gut_merged_dotplot_top5_markers.png" width="500"></td>
+  </tr>
+</table>
+<h3 id="differential-expression-analysis">Differential expression analysis</h3>
+<p>For each tissue, differential expression analysis, between control and B-fructan groups was conducted using the Wilcoxon test.</p>
+<h4 id="differentially-expressed-genes-for-gut-cecum-cells">Differentially expressed genes for gut (cecum) cells</h4>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/gut2_EnhancedVolcano_B-fructan_vs_Control.png" alt="gut_EnhancedVolcano_B-fructan_vs_Control.png" width="500"></td>
+  </tr>
+</table>
+<p>Please see file gut_DE_results_Wilcoxon_Control_vs_B-fructan.xlsx</p>
+<h4 id="differentially-expressed-genes-for-spinal-cord-cells">Differentially expressed genes for spinal cord cells</h4>
+<table>
+  <tr>
+    <td><img src="file:////Users/juanjovel/Library/CloudStorage/OneDrive-UniversityofCalgary/jj/UofC/git_repos/HA_mouse_sc_fructan/report_1/figures/spine_EnhancedVolcano_B-fructan_vs_Control.png" alt="spine_EnhancedVolcano_B-fructan_vs_Control.png" width="500"></td>
+  </tr>
+</table>
+<p>Please see file spine_DE_results_Wilcoxon_Control_vs_B-fructan.xlsx</p>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
