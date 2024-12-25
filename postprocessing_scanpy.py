@@ -1,6 +1,9 @@
 import os
 import scanpy as sc
 import anndata as ad
+import scrublet as scr
+import scipy.sparse
+import matplotlib.pyplot as plt
 
 # Path to the parent directory containing the sample directories
 parent_dir = "/Users/juanjovel/OneDrive/jj/UofC/data_analysis/heatherArmstrong/pediatric_MS/sc_mice/matrices"
@@ -53,6 +56,7 @@ sc.pl.violin(
     adata,
     ["n_genes_by_counts", "total_counts", "pct_counts_mt"],
     jitter=0.4,
+    jitter_size=3,
     multi_panel=True,
     save=output_file
 )
@@ -68,11 +72,26 @@ sc.pl.scatter(
 sc.pp.filter_cells(adata, min_genes=200)
 sc.pp.filter_genes(adata, min_cells=3)
 
-# Run the doublets detection algorithm
-sc.pp.scrublet(adata, batch_key="sample")
+# Doublet detection using Scrublet
+adata.layers["counts"] = adata.X.copy()  # Save count data before normalization
 
-# Saving count data
-adata.layers["counts"] = adata.X.copy()
+# If the data is in sparse format, convert it to a dense matrix
+counts_matrix = adata.X.toarray() if scipy.sparse.issparse(adata.X) else adata.X
+
+# Initialize Scrublet
+scrub = scr.Scrublet(counts_matrix)
+
+# Run Scrublet
+doublet_scores, predicted_doublets = scrub.scrub_doublets()
+
+# Add the results back to the AnnData object
+adata.obs["doublet_scores"] = doublet_scores
+adata.obs["predicted_doublets"] = predicted_doublets.astype(str)  # Ensure boolean values are converted to strings for visualization
+
+adata = adata[adata.obs["predicted_doublets"] == "False", :]
+
+# Save a histogram of doublet scores
+scrub.plot_histogram()
 
 # Normalizing to median total counts
 sc.pp.normalize_total(adata)
@@ -130,9 +149,13 @@ sc.pl.umap(
 # we already computed in the previous section.
 
 # Using the igraph implementation and a fixed number of iterations can be significantly faster, especially for larger datasets
-sc.tl.leiden(adata, flavor="igraph", n_iterations=2)
+sc.tl.leiden(adata, n_iterations=2)
 
 output_file = "merged_UMAP_afterClustering_plot.png"
+
+# Set figure size
+plt.rcParams["figure.figsize"] = (18, 10)  # Width x Height in inches
+
 sc.pl.umap(
     adata, 
     color=["leiden"],
@@ -160,11 +183,6 @@ sc.pl.umap(
     ncols=2,
     save=output_file
 )
-
-
-
-
-
 
 # Save the combined AnnData object
 adata_combined.write_h5ad("combined_samples.h5ad")
